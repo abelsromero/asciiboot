@@ -1,0 +1,32 @@
+= README
+
+
+== Requirements
+
+* Docker
+* https://kind.sigs.k8s.io/[Kind]
+
+== Build & Deploy
+
+=== Kubernetes
+
+ ./gradlew clean bootBuildImage && \
+ kind load docker-image springboot-app:0.0.1-SNAPSHOT && \
+ kubectl apply -f springboot-pod.yaml
+
+=== Docker usage
+
+To run in plain Docker:
+
+ docker run -it -p8080:8080 springboot-app:0.0.1-SNAPSHOT
+
+== Connecting
+
+ kubectl port-forward asciiboot 8080:8080
+
+You should be able to access the https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready[Actuator] endpoint http://localhost:8080/actuator.
+
+
+== Seeing logs
+
+ kubectl logs asciiboot

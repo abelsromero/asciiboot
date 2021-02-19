@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+build:
+  artifacts:
+    - image: springboot-app
+      custom:
+        buildCommand: ./gradlew bootBuildImage
+        dependencies:
+          paths:
+            - src/main/**
+            - build.gradle
+            - settings.gradle
+  tagPolicy:
+    envTemplate:
+      template: "0.0.1-SNAPSHOT"
+  local:
+    push: false
+deploy:
+  kubectl:
+    manifests:
+      - springboot-*
