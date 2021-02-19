@@ -42,8 +42,7 @@ public class ConverterController {
         long start = System.currentTimeMillis();
 
         convertAllInPath("**/*.adoc");
-
-        convertAllInPath("/**/*.adoc");
+        // convertAllInPath("/**/*.adoc");
 
         return "time: " + (System.currentTimeMillis() - start) / 1000;
     }

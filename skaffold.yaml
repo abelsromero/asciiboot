@@ -15,6 +15,11 @@ build:
       template: "0.0.1-SNAPSHOT"
   local:
     push: false
+portForward:
+  - resourceType: pod
+    resourceName: asciiboot
+    namespace: default
+    port: 8080
 deploy:
   kubectl:
     manifests:
