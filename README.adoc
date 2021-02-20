@@ -1,32 +1,75 @@
-= README
+= Asciidoctor + Spring Boot + K8s
+:asciidoctor-docs-url: https://docs.asciidoctor.org/
+:toc: preamble
+:validation: You should be able to access the https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready[Actuator] endpoint http://localhost:8080/actuator.
 
+This project shows how work with a containerized https://spring.io/projects/spring-boot[Spring Boot] service to convert documents with {asciidoctor-docs-url}asciidoctorj/latest[Asciidoctorj].
 
 == Requirements
 
-* Docker
-* https://kind.sigs.k8s.io/[Kind]
+* https://www.docker.com/[Docker]
+* https://kind.sigs.k8s.io/[Kind]: to create a simplified local K8s cluster.
+* https://skaffold.dev/[Skaffold]: to automate, build, deploy and debugging, with life-reload.
+Debugging requires IntelliJ + https://plugins.jetbrains.com/plugin/8079-cloud-code[Cloud Code plugin].
 
 == Build & Deploy
 
-=== Kubernetes
+Note deploying in just Docker or local K8s requires the minimal setup, but also require more manual steps.
+And doesn't allow for life-reload and code debugging from IntelliJ.
 
- ./gradlew clean bootBuildImage && \
- kind load docker-image springboot-app:0.0.1-SNAPSHOT && \
- kubectl apply -f springboot-pod.yaml
+=== Docker only
 
-=== Docker usage
+To run in plain Docker, build the image and run it.
 
-To run in plain Docker:
+ $ ./gradlew bootBuildImage
+ $ docker run -it -p8080:8080 springboot-app:0.0.1-SNAPSHOT
 
- docker run -it -p8080:8080 springboot-app:0.0.1-SNAPSHOT
+=== Kubernetes only
 
-== Connecting
+. Start a local Kind cluster
 
- kubectl port-forward asciiboot 8080:8080
+ $ kind create cluster
 
-You should be able to access the https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready[Actuator] endpoint http://localhost:8080/actuator.
+. Build Spring Boot docker image
 
+ $ ./gradlew bootBuildImage
 
-== Seeing logs
+. Load image into Kind
 
- kubectl logs asciiboot
+ $ kind load docker-image springboot-app:0.0.1-SNAPSHOT && \
+
+. Deploy in Kind's K8s cluster
+
+ $ kubectl apply -f springboot-pod.yaml
+
+[TIP]
+====
+You can run all commands at once with:
+----
+$ ./gradlew clean bootBuildImage && \
+kind load docker-image springboot-app:0.0.1-SNAPSHOT && \
+kubectl apply -f springboot-pod.yaml
+----
+====
+
+To validate it:
+
+ $ kubectl port-forward asciiboot 8080:8080
+
+{validation}
+
+=== Skaffold
+
+Skaffold automates the complete process of building, deploying, port-forwarding and debugging.
+It also offers life-reload, so that changes in the code ar automatically deployed in the local k8s cluster.
+
+To just run without debugging
+
+ $ skaffold dev
+
+{validation}
+
+For debugging install https://plugins.jetbrains.com/plugin/8079-cloud-code[Cloud Code plugin] in IntelliJ.
+Create a `Cloud Code: Kubernetes` with the `Run > Edit Configurations` option, and run it as `Debug`.
+
+You should see the app logs in the ID console and be able to add breakpoints and debug as any other Java app.
