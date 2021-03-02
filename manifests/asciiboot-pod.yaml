@@ -8,3 +8,7 @@ spec:
   containers:
     - image: asciiboot-dev:0.0.1-SNAPSHOT
       name: asciiboot
+      readinessProbe:
+        httpGet:
+          path: /actuator/health/readiness
+          port: 8080
