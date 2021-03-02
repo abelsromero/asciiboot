@@ -22,7 +22,7 @@ And doesn't allow for life-reload and code debugging from IntelliJ.
 To run in plain Docker, build the image and run it.
 
  $ ./gradlew bootBuildImage
- $ docker run -it -p8080:8080 springboot-app:0.0.1-SNAPSHOT
+ $ docker run -it -p8080:8080 asciiboot:0.0.1-SNAPSHOT
 
 === Kubernetes only
 
@@ -36,19 +36,19 @@ To run in plain Docker, build the image and run it.
 
 . Load image into Kind
 
- $ kind load docker-image springboot-app:0.0.1-SNAPSHOT && \
+ $ kind load docker-image asciiboot:0.0.1-SNAPSHOT
 
 . Deploy in Kind's K8s cluster
 
- $ kubectl apply -f springboot-pod.yaml
+ $ kubectl apply -f asciiboot-pod.yaml
 
 [TIP]
 ====
 You can run all commands at once with:
 ----
 $ ./gradlew clean bootBuildImage && \
-kind load docker-image springboot-app:0.0.1-SNAPSHOT && \
-kubectl apply -f springboot-pod.yaml
+kind load docker-image asciiboot0.0.1-SNAPSHOT && \
+kubectl apply -f asciiboot-pod.yaml
 ----
 ====
 

@@ -6,5 +6,5 @@ metadata:
   name: asciiboot
 spec:
   containers:
-    - image: springboot-app:0.0.1-SNAPSHOT
+    - image: asciiboot-dev:0.0.1-SNAPSHOT
       name: asciiboot
