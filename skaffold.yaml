@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta12
 kind: Config
 build:
   artifacts:
-    - image: springboot-app
+    - image: asciiboot-dev
       custom:
         buildCommand: ./gradlew bootBuildImage
         dependencies:
@@ -15,12 +15,12 @@ build:
       template: "0.0.1-SNAPSHOT"
   local:
     push: false
+deploy:
+  kubectl:
+    manifests:
+      - manifests/*.yaml
 portForward:
   - resourceType: pod
     resourceName: asciiboot
     namespace: default
     port: 8080
-deploy:
-  kubectl:
-    manifests:
-      - springboot-*
