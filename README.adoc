@@ -12,6 +12,15 @@ This project shows how work with a containerized https://spring.io/projects/spri
 * https://skaffold.dev/[Skaffold]: to automate, build, deploy and debugging, with life-reload.
 Debugging requires IntelliJ + https://plugins.jetbrains.com/plugin/8079-cloud-code[Cloud Code plugin].
 
+== Features
+
+=== Metrics
+
+Skaffold deployment adds https://github.com/kubernetes-sigs/metrics-server[metrics server] adapted for Kind.
+Once <<_skaffold,deployed>>, you can check the resources used by the pod with
+
+ $ kubectl top pods
+
 == Build & Deploy
 
 Note deploying in just Docker or local K8s requires the minimal setup, but also require more manual steps.
