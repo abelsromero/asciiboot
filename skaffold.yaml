@@ -4,15 +4,15 @@ build:
   artifacts:
     - image: asciiboot-dev
       custom:
-        buildCommand: ./gradlew bootBuildImage
+        buildCommand: |
+          ./gradlew bootBuildImage --imageName="$IMAGE"
         dependencies:
           paths:
             - src/main/**
             - build.gradle
             - settings.gradle
   tagPolicy:
-    envTemplate:
-      template: "0.0.1-SNAPSHOT"
+    gitCommit: {}
   local:
     push: false
 deploy:
