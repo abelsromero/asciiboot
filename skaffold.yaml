@@ -1,10 +1,11 @@
-apiVersion: skaffold/v2beta12
+apiVersion: skaffold/v2beta10
 kind: Config
 build:
   artifacts:
     - image: asciiboot-dev
       custom:
-        buildCommand: ./gradlew bootBuildImage
+        buildCommand: |
+          echo ">>> IMAGE: $IMAGE" && ./gradlew bootBuildImage --imageName="$IMAGE"
         dependencies:
           paths:
             - src/main/**
