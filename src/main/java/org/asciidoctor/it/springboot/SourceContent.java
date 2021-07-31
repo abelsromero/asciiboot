@@ -9,5 +9,11 @@ public class SourceContent {
      * Base64 encoded
      */
     private String data;
+    private Options options;
+    
+    @Data
+    static class Options {
+        private String backend;
+    }
 
 }

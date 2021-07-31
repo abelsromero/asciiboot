@@ -20,7 +20,7 @@ class SpringbootAppApplicationTests {
     private TestRestTemplate restTemplate;
 
     @Test
-    void should_convert_document() {
+    void should_convert_document_to_html() {
 
         final SourceContent request = new SourceContent();
         String asciidocDocument = "= Title\n" +
@@ -44,6 +44,34 @@ class SpringbootAppApplicationTests {
                 .contains("<h1>Title</h1>")
                 .contains("<p>first chapter</p>")
                 .contains("<h2 id=\"_second_chapter\">Second chapter</h2>");
+    }
+
+    @Test
+    void should_convert_document_to_pdf() {
+
+        final SourceContent request = new SourceContent();
+        String asciidocDocument = "= Title\n" +
+                "\n" +
+                "== First chapter\n" +
+                "first chapter\n" +
+                "\n" +
+                "== Second chapter\n" +
+                "second chapter";
+        request.setData(base64Encode(asciidocDocument));
+        SourceContent.Options options = new SourceContent.Options();
+        options.setBackend("pdf");
+        request.setOptions(options);
+
+        ResponseEntity<ConvertedResource> responseEntity = restTemplate.postForEntity("/asciidoc", request, ConvertedResource.class);
+
+        assertThat(responseEntity.getStatusCodeValue())
+                .isEqualTo(HttpStatus.OK.value());
+        final ConvertedResource response = responseEntity.getBody();
+        assertThat(response.getContentType())
+                .isEqualTo(MediaType.APPLICATION_PDF_VALUE);
+
+        assertThat(base64Decode(response))
+                .startsWith("%PDF-1.4");
     }
 
     private String base64Encode(String asciidocDocument) {
