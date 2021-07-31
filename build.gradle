@@ -16,6 +16,7 @@ repositories {
 
 ext {
     asciidoctorjVersion = '2.5.1'
+    asciidoctorjPdfVersion = '1.6.0'
 }
 
 lombok {
@@ -24,6 +25,8 @@ lombok {
 
 dependencies {
     implementation "org.asciidoctor:asciidoctorj:${asciidoctorjVersion}"
+    implementation "org.asciidoctor:asciidoctorj-pdf:${asciidoctorjPdfVersion}"
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
 

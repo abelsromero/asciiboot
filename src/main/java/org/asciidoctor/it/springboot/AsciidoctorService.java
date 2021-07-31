@@ -1,9 +1,17 @@
 package org.asciidoctor.it.springboot;
 
+import lombok.SneakyThrows;
 import org.asciidoctor.Asciidoctor;
+import org.asciidoctor.Options;
 import org.asciidoctor.OptionsBuilder;
 import org.asciidoctor.SafeMode;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.function.Consumer;
 
 @Component
 public class AsciidoctorService {
@@ -11,15 +19,49 @@ public class AsciidoctorService {
     private final Asciidoctor asciidoctor = Asciidoctor.Factory.create();
 
 
-    public String convert(String source) {
-        return asciidoctor.convert(source, defaultOptions());
+    public byte[] convert(String source, SourceContent.Options options) {
+
+        if (options == null || !"pdf".equals(options.getBackend())) {
+            return asciidoctor.convert(source, buildOptions(options)).getBytes(StandardCharsets.UTF_8);
+        }
+
+        final File tempOutput = extracted();
+
+        asciidoctor.convert(source, buildOptions(options, builder -> {
+            builder.mkDirs(true);
+            builder.toFile(tempOutput);
+        }));
+        return readString(tempOutput);
     }
 
-    private OptionsBuilder defaultOptions() {
-        return OptionsBuilder.options()
-                .backend("html5")
-                .safe(SafeMode.SAFE)
+    @SneakyThrows
+    private byte[] readString(File tempOutput) {
+        return Files.readAllBytes(tempOutput.toPath());
+    }
+
+    private Options buildOptions(SourceContent.Options options) {
+        return Options.builder()
+                .backend(options != null && StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
+                .safe(SafeMode.UNSAFE)
+                .headerFooter(true)
+                .toFile(false)
+                .build();
+    }
+
+    private Options buildOptions(SourceContent.Options options, Consumer<OptionsBuilder> optionsCustomizer) {
+        final OptionsBuilder optionsBuilder = Options.builder()
+                .backend(StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
+                .safe(SafeMode.UNSAFE)
                 .headerFooter(true)
                 .toFile(false);
+        optionsCustomizer.accept(optionsBuilder);
+        return optionsBuilder
+                .build();
+    }
+
+
+    @SneakyThrows
+    private File extracted() {
+        return File.createTempFile("asciidoctor-pdf-", ".pdf");
     }
 }
