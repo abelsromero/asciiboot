@@ -42,6 +42,8 @@ jobs:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle-wrapper-
+      - name: Gradle env
+        run: ./gradlew -version
       - name: Build
         run: ./gradlew build
       - name: Test
