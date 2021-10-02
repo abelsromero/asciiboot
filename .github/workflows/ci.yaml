@@ -45,6 +45,6 @@ jobs:
       - name: Gradle env
         run: ./gradlew -version
       - name: Build
-        run: ./gradlew -version && ./gradlew build
+        run: ./gradlew build
       - name: Test
-        run: ./gradlew -version && ./gradlew test
+        run: ./gradlew test
