@@ -15,6 +15,8 @@ Debugging requires IntelliJ + https://plugins.jetbrains.com/plugin/8079-cloud-co
 == Features
 
 === Metrics
+// https://github.com/kubernetes-sigs/metrics-server/releases/download/metrics-server-helm-chart-3.8.2/components.yaml
+// kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
 Skaffold deployment adds https://github.com/kubernetes-sigs/metrics-server[metrics server] adapted for Kind.
 Once <<_skaffold,deployed>>, you can check the resources used by the pod with
@@ -37,7 +39,7 @@ To run in plain Docker, build the image and run it.
 
 . Start a local Kind cluster
 
- $ kind create cluster
+ $ kind create cluster --config kind-config.yaml
 
 . Build Spring Boot docker image
 
@@ -49,23 +51,22 @@ To run in plain Docker, build the image and run it.
 
 . Deploy in Kind's K8s cluster
 
- $ kubectl apply -f asciiboot-pod.yaml
-
-[TIP]
-====
-You can run all commands at once with:
-----
-$ ./gradlew clean bootBuildImage && \
-kind load docker-image asciiboot0.0.1-SNAPSHOT && \
-kubectl apply -f asciiboot-pod.yaml
-----
-====
+ $ kubectl apply -f manifests/
 
 To validate it:
 
- $ kubectl port-forward asciiboot 8080:8080
+ $ kubectl port-forward service/asciiboot-svc 8080:8080
 
 {validation}
+
+[NOTE]
+====
+Project contains a modified version of https://github.com/kubernetes-sigs/metrics-server/releases/download/metrics-server-helm-chart-3.8.2/components.yaml adding `--kubelet-insecure-tls`.
+Otherwise metrics-server pod won't start with error
+----
+scraper.go:140] "Failed to scrape node" err="Get \"https://172.18.0.2:10250/metrics/resource\": x509: cannot validate certificate for 172.18.0.2 because it doesn't contain any IP SANs" node="kind-21-worker"
+----
+====
 
 === Skaffold
 

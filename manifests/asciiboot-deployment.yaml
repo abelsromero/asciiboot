@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: asciiboot
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: asciiboot
+  name: asciiboot
+  namespace: asciiboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asciiboot
+  template:
+    metadata:
+      labels:
+        app: asciiboot
+    spec:
+      containers:
+        - image: asciiboot:0.0.1-SNAPSHOT
+          name: asciiboot
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: asciiboot
+  name: asciiboot-svc
+  namespace: asciiboot
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: asciiboot
