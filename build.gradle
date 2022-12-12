@@ -16,7 +16,7 @@ repositories {
 
 ext {
     asciidoctorjVersion = '2.5.7'
-    asciidoctorjPdfVersion = '2.3.3'
+    asciidoctorjPdfVersion = '2.3.4'
 }
 
 lombok {
