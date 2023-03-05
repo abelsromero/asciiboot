@@ -35,6 +35,12 @@ To run in plain Docker, build the image and run it.
  $ ./gradlew bootBuildImage
  $ docker run -it -p8080:8080 asciiboot:0.0.1-SNAPSHOT
 
+To demo it run
+
+ curl -X POST -H 'Content-Type: application/json' "http://localhost:8080/asciidoc" -d '{"data":"PSBUaXRsZQo="}' | jq -r '.content' | base64 -d  > file.html
+
+An open `file.html`
+
 === Kubernetes only
 
 . Start a local Kind cluster
@@ -62,7 +68,7 @@ To validate it:
 [NOTE]
 ====
 Project contains a modified version of https://github.com/kubernetes-sigs/metrics-server/releases/download/metrics-server-helm-chart-3.8.2/components.yaml adding `--kubelet-insecure-tls`.
-Otherwise metrics-server pod won't start with error
+Otherwise, metrics-server pod won't start with error
 ----
 scraper.go:140] "Failed to scrape node" err="Get \"https://172.18.0.2:10250/metrics/resource\": x509: cannot validate certificate for 172.18.0.2 because it doesn't contain any IP SANs" node="kind-21-worker"
 ----
