@@ -22,7 +22,7 @@ class SpringbootAppApplicationTests {
     @Test
     void should_convert_document_to_html() {
 
-        final SourceContent request = new SourceContent();
+        final SourceContent request = new SourceContent(data, options);
         String asciidocDocument = "= Title\n" +
                 "\n" +
                 "== First chapter\n" +
@@ -49,7 +49,7 @@ class SpringbootAppApplicationTests {
     @Test
     void should_convert_document_to_pdf() {
 
-        final SourceContent request = new SourceContent();
+        final SourceContent request = new SourceContent(data, options);
         String asciidocDocument = "= Title\n" +
                 "\n" +
                 "== First chapter\n" +
@@ -58,7 +58,7 @@ class SpringbootAppApplicationTests {
                 "== Second chapter\n" +
                 "second chapter";
         request.setData(base64Encode(asciidocDocument));
-        SourceContent.Options options = new SourceContent.Options();
+        SourceContent.Options options = new SourceContent.Options(backend);
         options.setBackend("pdf");
         request.setOptions(options);
 

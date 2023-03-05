@@ -1,6 +1,5 @@
 package org.asciidoctor.it.springboot;
 
-import lombok.SneakyThrows;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
 import org.asciidoctor.OptionsBuilder;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.function.Consumer;
@@ -34,9 +34,12 @@ public class AsciidoctorService {
         return readString(tempOutput);
     }
 
-    @SneakyThrows
     private byte[] readString(File tempOutput) {
-        return Files.readAllBytes(tempOutput.toPath());
+        try {
+            return Files.readAllBytes(tempOutput.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Options buildOptions(SourceContent.Options options) {
@@ -60,8 +63,11 @@ public class AsciidoctorService {
     }
 
 
-    @SneakyThrows
     private File extracted() {
-        return File.createTempFile("asciidoctor-pdf-", ".pdf");
+        try {
+            return File.createTempFile("asciidoctor-pdf-", ".pdf");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

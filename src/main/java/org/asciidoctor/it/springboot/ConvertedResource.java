@@ -1,11 +1,21 @@
 package org.asciidoctor.it.springboot;
 
-import lombok.Value;
 
-@Value
 public class ConvertedResource {
 
-    String content;
-    String contentType;
+    private final String content;
+    private final String contentType;
 
+    public ConvertedResource(String content, String contentType) {
+        this.content = content;
+        this.contentType = contentType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
 }

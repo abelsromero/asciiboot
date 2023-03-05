@@ -1,6 +1,5 @@
 package org.asciidoctor.it.springboot;
 
-import lombok.SneakyThrows;
 import org.asciidoctor.jruby.GlobDirectoryWalker;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.List;
@@ -26,7 +26,6 @@ public class ConverterController {
     public ConverterController(AsciidoctorService asciidoctorService) {
         this.asciidoctorService = asciidoctorService;
     }
-
 
     @PostMapping("/asciidoc")
     public ConvertedResource convert(@RequestBody SourceContent content) {
@@ -67,9 +66,11 @@ public class ConverterController {
         });
     }
 
-    @SneakyThrows
     private String readFile(File file) {
-        return Files.readString(file.toPath());
+        try {
+            return Files.readString(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }

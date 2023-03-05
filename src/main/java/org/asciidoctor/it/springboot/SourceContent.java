@@ -1,19 +1,40 @@
 package org.asciidoctor.it.springboot;
 
-import lombok.Data;
 
-@Data
 public class SourceContent {
 
     /**
      * Base64 encoded
      */
-    private String data;
-    private Options options;
-    
-    @Data
-    static class Options {
-        private String backend;
+    private final String data;
+    private final Options options;
+
+    public SourceContent(String data, Options options) {
+        this.data = data;
+        this.options = options;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public Options getOptions() {
+        return options;
+    }
+
+    static class Options {
+        private final String backend;
+
+        Options() {
+            this.backend = null;
+        }
+
+        Options(String backend) {
+            this.backend = backend;
+        }
+
+        public String getBackend() {
+            return backend;
+        }
+    }
 }
