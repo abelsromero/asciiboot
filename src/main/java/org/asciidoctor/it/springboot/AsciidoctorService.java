@@ -4,6 +4,7 @@ import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
 import org.asciidoctor.OptionsBuilder;
 import org.asciidoctor.SafeMode;
+import org.asciidoctor.it.springboot.model.SourceContent;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -44,24 +45,23 @@ public class AsciidoctorService {
 
     private Options buildOptions(SourceContent.Options options) {
         return Options.builder()
-                .backend(options != null && StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
-                .safe(SafeMode.UNSAFE)
-                .headerFooter(true)
-                .toFile(false)
-                .build();
+            .backend(options != null && StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
+            .safe(SafeMode.UNSAFE)
+            .headerFooter(true)
+            .toFile(false)
+            .build();
     }
 
     private Options buildOptions(SourceContent.Options options, Consumer<OptionsBuilder> optionsCustomizer) {
         final OptionsBuilder optionsBuilder = Options.builder()
-                .backend(StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
-                .safe(SafeMode.UNSAFE)
-                .headerFooter(true)
-                .toFile(false);
+            .backend(StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
+            .safe(SafeMode.UNSAFE)
+            .headerFooter(true)
+            .toFile(false);
         optionsCustomizer.accept(optionsBuilder);
         return optionsBuilder
-                .build();
+            .build();
     }
-
 
     private File extracted() {
         try {
