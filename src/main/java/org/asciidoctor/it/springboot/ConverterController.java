@@ -1,5 +1,7 @@
 package org.asciidoctor.it.springboot;
 
+import org.asciidoctor.it.springboot.model.ConvertedResource;
+import org.asciidoctor.it.springboot.model.SourceContent;
 import org.asciidoctor.jruby.GlobDirectoryWalker;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -29,18 +31,18 @@ public class ConverterController {
 
     @PostMapping("/asciidoc")
     public ConvertedResource convert(@RequestBody SourceContent content) {
-        byte[] decodedContent = Base64.getDecoder().decode(content.getData());
-        byte[] converted = asciidoctorService.convert(new String(decodedContent), content.getOptions());
+        byte[] decodedContent = Base64.getDecoder().decode(content.data());
+        byte[] converted = asciidoctorService.convert(new String(decodedContent), content.options());
 
         String encodedConvertedContent = Base64.getEncoder().encodeToString(converted);
         return new ConvertedResource(encodedConvertedContent, contentType(content));
     }
 
     private String contentType(SourceContent content) {
-        if (content == null || content.getOptions() == null || !StringUtils.hasText(content.getOptions().getBackend()))
+        if (content == null || content.options() == null || !StringUtils.hasText(content.options().getBackend()))
             return MediaType.TEXT_HTML_VALUE;
 
-        if (content.getOptions().getBackend().equalsIgnoreCase("pdf"))
+        if (content.options().getBackend().equalsIgnoreCase("pdf"))
             return MediaType.APPLICATION_PDF_VALUE;
 
         return MediaType.APPLICATION_OCTET_STREAM_VALUE;

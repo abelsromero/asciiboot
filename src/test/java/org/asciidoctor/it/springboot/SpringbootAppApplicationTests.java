@@ -1,5 +1,7 @@
 package org.asciidoctor.it.springboot;
 
+import org.asciidoctor.it.springboot.model.ConvertedResource;
+import org.asciidoctor.it.springboot.model.SourceContent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,56 +24,55 @@ class SpringbootAppApplicationTests {
     @Test
     void should_convert_document_to_html() {
 
-        final SourceContent request = new SourceContent(data, options);
-        String asciidocDocument = "= Title\n" +
-                "\n" +
-                "== First chapter\n" +
-                "first chapter\n" +
-                "\n" +
-                "== Second chapter\n" +
-                "second chapter";
-        request.setData(base64Encode(asciidocDocument));
+        final String asciidocDocument = """
+            = Title
+                        
+            == First chapter
+            first chapter
+
+            == Second chapter
+            second chapter""";
+        final SourceContent request = new SourceContent(base64Encode(asciidocDocument), new SourceContent.Options());
 
         ResponseEntity<ConvertedResource> responseEntity = restTemplate.postForEntity("/asciidoc", request, ConvertedResource.class);
 
         assertThat(responseEntity.getStatusCodeValue())
-                .isEqualTo(HttpStatus.OK.value());
+            .isEqualTo(HttpStatus.OK.value());
         final ConvertedResource response = responseEntity.getBody();
-        assertThat(response.getContentType())
-                .isEqualTo(MediaType.TEXT_HTML_VALUE);
+        assertThat(response.contentType())
+            .isEqualTo(MediaType.TEXT_HTML_VALUE);
 
         assertThat(base64Decode(response))
-                .contains("<h1>Title</h1>")
-                .contains("<p>first chapter</p>")
-                .contains("<h2 id=\"_second_chapter\">Second chapter</h2>");
+            .contains("<h1>Title</h1>")
+            .contains("<p>first chapter</p>")
+            .contains("<h2 id=\"_second_chapter\">Second chapter</h2>");
     }
 
     @Test
     void should_convert_document_to_pdf() {
 
-        final SourceContent request = new SourceContent(data, options);
-        String asciidocDocument = "= Title\n" +
-                "\n" +
-                "== First chapter\n" +
-                "first chapter\n" +
-                "\n" +
-                "== Second chapter\n" +
-                "second chapter";
-        request.setData(base64Encode(asciidocDocument));
-        SourceContent.Options options = new SourceContent.Options(backend);
-        options.setBackend("pdf");
-        request.setOptions(options);
+        final String asciidocDocument = """
+            = Title
+
+            == First chapter
+            first chapter
+
+            == Second chapter
+            second chapter""";
+
+        final var options = new SourceContent.Options("pdf");
+        final SourceContent request = new SourceContent(base64Encode(asciidocDocument), options);
 
         ResponseEntity<ConvertedResource> responseEntity = restTemplate.postForEntity("/asciidoc", request, ConvertedResource.class);
 
         assertThat(responseEntity.getStatusCodeValue())
-                .isEqualTo(HttpStatus.OK.value());
+            .isEqualTo(HttpStatus.OK.value());
         final ConvertedResource response = responseEntity.getBody();
-        assertThat(response.getContentType())
-                .isEqualTo(MediaType.APPLICATION_PDF_VALUE);
+        assertThat(response.contentType())
+            .isEqualTo(MediaType.APPLICATION_PDF_VALUE);
 
         assertThat(base64Decode(response))
-                .startsWith("%PDF-1.4");
+            .startsWith("%PDF-1.4");
     }
 
     private String base64Encode(String asciidocDocument) {
@@ -79,6 +80,6 @@ class SpringbootAppApplicationTests {
     }
 
     private String base64Decode(ConvertedResource response) {
-        return new String(Base64.getDecoder().decode(response.getContent()));
+        return new String(Base64.getDecoder().decode(response.content()));
     }
 }
