@@ -44,4 +44,5 @@ main() {
   server_stop
 }
 
+jq -h
 main
