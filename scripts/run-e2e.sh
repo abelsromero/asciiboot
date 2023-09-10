@@ -24,6 +24,7 @@ server_start() {
   done
   if (( loops*wait_time > timeout_seconds )); then
     echo "[ERROR] Could not start server"
+    exit 1
   fi
 }
 

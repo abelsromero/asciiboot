@@ -48,3 +48,5 @@ jobs:
         run: ./gradlew build
       - name: Test
         run: ./gradlew test
+      - name: E2E Test
+        run: ./scripts/run-e2e.sh
