@@ -16,13 +16,13 @@ server_start() {
   # wait until ready
   loops=0
   wait_time=2
-  timeout_seconds=10
-  while (( loops*wait_time < timeout_seconds)); do
+  timeout_ticks=10
+  while (( loops*wait_time < timeout_ticks)); do
     [[ "$(curl -s "http://localhost:8080/actuator/health/readiness" | jq -r '.status')" == "UP" ]] && return 0
     sleep "$wait_time"
     loops=$((loops+1))
   done
-  if (( loops*wait_time >= timeout_seconds )); then
+  if (( loops*wait_time >= timeout_ticks )); then
     echo "[ERROR] Could not start server"
     exit 1
   fi
