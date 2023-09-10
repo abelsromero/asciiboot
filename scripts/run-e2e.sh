@@ -14,12 +14,11 @@ server_start() {
   java -jar "build/libs/asciiboot-${PROJECT_VERSION}.jar" &
   ASCIIBOOT_PID=$!
   # wait until ready
-  loops=0
-  wait_time=3
-  timeout_ticks=10
+  local loops=0
+  local wait_time=3
+  local timeout_ticks=10
   while (( loops*wait_time < timeout_ticks)); do
     server_status="$(curl "http://localhost:8080/actuator/health/readiness" | jq -r '.status')"
-    echo "Server status: $server_status"
     [[ "$server_status" == "UP" ]] && return 0
     sleep "$wait_time"
     loops=$((loops+1))
@@ -46,6 +45,4 @@ main() {
   server_stop
 }
 
-jq -h
-curl -h
 main
