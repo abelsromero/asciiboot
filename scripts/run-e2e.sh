@@ -15,7 +15,7 @@ server_start() {
   ASCIIBOOT_PID=$!
   # wait until ready
   loops=0
-  wait_time=2
+  wait_time=3
   timeout_ticks=10
   while (( loops*wait_time < timeout_ticks)); do
     server_status="$(curl "http://localhost:8080/actuator/health/readiness" | jq -r '.status')"
