@@ -49,4 +49,5 @@ jobs:
       - name: Test
         run: ./gradlew test
       - name: E2E Test
+        if: runner.os != 'Windows'
         run: ./scripts/run-e2e.sh
