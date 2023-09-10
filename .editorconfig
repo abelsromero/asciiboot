@@ -7,6 +7,6 @@ indent_style = space
 indent_size = 4
 insert_final_newline = true
 
-[{*.yaml,*.gradle}]
+[{*.yaml,*.gradle,*.sh}]
 indent_size = 2
 

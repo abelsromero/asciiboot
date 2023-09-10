@@ -48,5 +48,14 @@ bootJar {
 }
 
 test {
-  useJUnitPlatform()
+  useJUnitPlatform {
+    excludeTags "e2e"
+  }
+}
+
+tasks.register("e2eTest", Test) {
+  dependsOn project.tasks.named('bootJar')
+  useJUnitPlatform {
+    includeTags "e2e"
+  }
 }
