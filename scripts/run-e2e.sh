@@ -18,7 +18,9 @@ server_start() {
   wait_time=2
   timeout_ticks=10
   while (( loops*wait_time < timeout_ticks)); do
-    [[ "$(curl -s "http://localhost:8080/actuator/health/readiness" | jq -r '.status')" == "UP" ]] && return 0
+    server_status="$(curl -s "http://localhost:8080/actuator/health/readiness" | jq -r '.status')"
+    echo "Server status: $server_status"
+    [[ "$server_status" == "UP" ]] && return 0
     sleep "$wait_time"
     loops=$((loops+1))
   done
