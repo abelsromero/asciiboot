@@ -76,7 +76,7 @@ scraper.go:140] "Failed to scrape node" err="Get \"https://172.18.0.2:10250/metr
 
 === Skaffold
 
-Skaffold automates the complete process of building, deploying, port-forwarding and debugging.
+https://skaffold.dev[Skaffold] automates the complete process of building, deploying, port-forwarding and debugging.
 It also offers life-reload, so that changes in the code ar automatically deployed in the local k8s cluster.
 
 To just run without debugging
@@ -88,4 +88,5 @@ To just run without debugging
 For debugging install https://plugins.jetbrains.com/plugin/8079-cloud-code[Cloud Code plugin] in IntelliJ.
 Create a `Cloud Code: Kubernetes` with the `Run > Edit Configurations` option, and run it as `Debug`.
 
-You should see the app logs in the ID console and be able to add breakpoints and debug as any other Java app.
+You should see the app logs in the IDE console and be able to add breakpoints and debug as any other Java app.
+

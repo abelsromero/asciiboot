@@ -1,8 +1,10 @@
-apiVersion: skaffold/v2beta12
+apiVersion: skaffold/v4beta8
 kind: Config
+metadata:
+  name: asciiboot
 build:
   artifacts:
-    - image: asciiboot-dev
+    - image: asciiboot
       custom:
         buildCommand: |
           ./gradlew bootBuildImage --imageName="$IMAGE"
@@ -15,12 +17,11 @@ build:
     gitCommit: { }
   local:
     push: false
-deploy:
-  kubectl:
-    manifests:
-      - manifests/*.yaml
+manifests:
+  rawYaml:
+    - manifests/*.yaml
 portForward:
-  - resourceType: pod
-    resourceName: asciiboot
-    namespace: default
+  - resourceType: service
+    resourceName: asciiboot-svc
+    namespace: asciiboot
     port: 8080
