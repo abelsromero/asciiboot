@@ -37,8 +37,8 @@ class SpringbootE2ETests {
 
         ResponseEntity<ConvertedResource> responseEntity = restTemplate.postForEntity(buildUrl(), request, ConvertedResource.class);
 
-        assertThat(responseEntity.getStatusCodeValue())
-            .isEqualTo(HttpStatus.OK.value());
+        assertThat(responseEntity.getStatusCode())
+            .isEqualTo(HttpStatus.OK);
         final ConvertedResource response = responseEntity.getBody();
         assertThat(response.contentType())
             .isEqualTo(MediaType.TEXT_HTML_VALUE);
@@ -66,8 +66,8 @@ class SpringbootE2ETests {
 
         ResponseEntity<ConvertedResource> responseEntity = restTemplate.postForEntity(buildUrl(), request, ConvertedResource.class);
 
-        assertThat(responseEntity.getStatusCodeValue())
-            .isEqualTo(HttpStatus.OK.value());
+        assertThat(responseEntity.getStatusCode())
+            .isEqualTo(HttpStatus.OK);
         final ConvertedResource response = responseEntity.getBody();
         assertThat(response.contentType())
             .isEqualTo(MediaType.APPLICATION_PDF_VALUE);
