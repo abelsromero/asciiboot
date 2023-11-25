@@ -47,7 +47,7 @@ public class AsciidoctorService {
         return Options.builder()
             .backend(options != null && StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
             .safe(SafeMode.UNSAFE)
-            .headerFooter(true)
+            .standalone(true)
             .toFile(false)
             .build();
     }
@@ -56,7 +56,7 @@ public class AsciidoctorService {
         final OptionsBuilder optionsBuilder = Options.builder()
             .backend(StringUtils.hasText(options.getBackend()) ? options.getBackend() : "html5")
             .safe(SafeMode.UNSAFE)
-            .headerFooter(true)
+            .standalone(true)
             .toFile(false);
         optionsCustomizer.accept(optionsBuilder);
         return optionsBuilder
