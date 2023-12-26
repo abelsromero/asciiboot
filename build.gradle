@@ -15,7 +15,7 @@ repositories {
 
 ext {
   asciidoctorjVersion = '2.5.11'
-  asciidoctorjPdfVersion = '2.3.9'
+  asciidoctorjPdfVersion = '2.3.10'
 }
 
 dependencies {
