@@ -2,7 +2,7 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-  id 'org.springframework.boot' version '3.3.5'
+  id 'org.springframework.boot' version '3.4.4'
   id 'java'
 }
 
